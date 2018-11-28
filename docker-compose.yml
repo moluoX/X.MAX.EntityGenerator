@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  x.max.entitygenerator:
+    image: ${DOCKER_REGISTRY}xmaxentitygenerator
+    build:
+      context: .
+      dockerfile: X.MAX.EntityGenerator/Dockerfile
