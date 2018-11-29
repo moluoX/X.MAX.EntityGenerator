@@ -1,0 +1,12 @@
+using System;
+
+namespace {{namespace}}
+{
+    /// <summary>
+    /// {{comment}}
+    /// </summary>
+    public class {{classname}}
+    {
+{{fields}}
+    }
+}

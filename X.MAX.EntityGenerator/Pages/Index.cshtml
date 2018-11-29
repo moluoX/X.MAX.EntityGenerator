@@ -12,40 +12,50 @@
 </style>
 
 <form method="get" class="form-inline" style="margin-top:20px;">
-    @Html.AntiForgeryToken()
     <div class="form-group">
         <input type="text" name="s" class="form-control" style="width:400px;" placeholder="过滤" value="@Model.S" />
         <button type="submit" class="btn btn-default">查询</button>
+        <div class="checkbox" style="display:inline-block;">
+            <label>
+                <input id="cbAll" type="checkbox" onchange="checkAll();"> 全选
+            </label>
+        </div>
+    </div>
+</form>
+<form id="formGen" method="post" class="form-inline" style="margin-top:20px;">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <input type="text" name="nspace" class="form-control" style="width:400px;" placeholder="命名空间" value="YCloud.CreditReport.Py.Model" />
+        <button type="button" class="btn btn-default" onclick="generate();">生成</button>
+        <a href="/entityfilePack.zip">下载</a>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" style="width:400px;" id="url" placeholder="所在文件夹" />
+        <button type="button" class="btn btn-default" onclick="copy();">复制</button>
     </div>
     <div>
         @foreach (var x in Model.Tables)
         {
-            <div class="checkbox" style="display:inline-block;">
+            <div class="checkbox col-md-4">
                 <label>
                     <input type="checkbox" name="tables" value="@x"> @x
                 </label>
             </div>
         }
     </div>
-    <div class="form-group">
-        <input type="text" class="form-control" style="width:400px;" placeholder="命名空间" value="YCloud.CreditReport.Py.Model" />
-        <button type="button" class="btn btn-default" onclick="generate();">生成</button>
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" style="width:400px;" id="url" />
-        <button type="button" class="btn btn-default" onclick="copy();">复制</button>
-    </div>
+    <div style="clear:both;"></div>
 </form>
 
 @section Scripts{
     <script>
+        function checkAll() {
+            $('[name="tables"]').prop('checked', $('#cbAll').is(':checked'));
+        }
+
         function generate() {
-            var tables = ["1", "2"];
-            $('[name="tables"]')
-            $.post('index', $("form").serialize(), function (res) {
+            $.post('index', $("#formGen").serialize(), function (res) {
                 if (res.code === 0) {
                     $('#url').val(res.data);
-                    $('#url')[0].select();
                 } else {
                     alert(res.msg);
                 }

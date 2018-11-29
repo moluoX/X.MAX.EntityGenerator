@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using X.MAX.EntityGenerator.Domain;
 
 namespace X.MAX.EntityGenerator
 {
@@ -21,6 +25,9 @@ namespace X.MAX.EntityGenerator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<UserTableContext>(options =>
+                options.UseOracle(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<Generator>();
             services.AddMvc();
         }
 
